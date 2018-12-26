@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <canvas id="cvs" width="300" height="150"></canvas>
+    <script src="./js/util.js"></script>
+    <script src="./js/sky.js"></script>
+    <script src="./js/pipe.js"></script>
+    <script src="./js/land.js"></script>
+    <script src="./js/bird.js"></script>
+    <script src="./js/gameScene.js"></script>
+    <script src="./js/overScene.js"></script>
+    <script>
+        var cvs = document.querySelector('#cvs');
+        var ctx = cvs.getContext('2d');
+        util.loadImage({
+            //导入游戏所需的图片
+            bird: './img/bird.png',
+            land: './img/land.png',
+            pipeDown: './img/pipeDown.png',
+            pipeUp: './img/pipeUp.png',
+            sky: './img/sky.png'
+            }, function (imgObj) {
+            //根据背景图的宽高设置canvas的宽高
+            cvs.width = imgObj.sky.width;
+            cvs.height = imgObj.sky.height;
+            var isRun = true;
+            var gameBegin = getScene(ctx,imgObj);
+            var gameEnd = getOverScene(ctx);
+            gameBegin.addListener(function () {
+                isRun = false;
+                gameEnd.draw();
+            });
+
+            (function run() {
+                gameBegin.draw();
+                if(isRun){
+                    requestAnimationFrame(run);
+                }
+            })();
+        });
+
+
+    </script>
+
+</body>
+</html>
